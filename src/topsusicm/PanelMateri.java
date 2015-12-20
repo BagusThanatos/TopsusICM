@@ -106,7 +106,18 @@ public class PanelMateri extends javax.swing.JPanel {
             updateStatusLabel("04alt", labelMoreComplexQueries);
             updateStatusLabel("06inj", labelFullOuter);
             updateStatusLabel("11mcq", labelInnerJoin);
-            updateColor(labelCreateInsert, labelUpdate.isEnabled() ? 2:0, 0);
+            updateColor("01cri",labelCreateInsert);
+            updateColor("02ude", labelUpdate);
+            updateColor("03que", labelQuery);
+            updateColor("11mcq", labelMoreComplexQueries);
+            updateColor("09hvc", labelHaving);
+            updateColor("08agr", labelAgregasi);
+            updateColor("05loj", labelLeftOuter);
+            updateColor("06inj", labelInnerJoin);
+            updateColor("10qsb", labelQueriesSub);
+            updateColor("04alt", labelAltering);
+            updateColor("07foj", labelFullOuter);
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(PanelMateri.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,7 +129,7 @@ public class PanelMateri extends javax.swing.JPanel {
         try {
             double nilai1=0, nilai2=0;
             Color color =null;
-            ResultSet rs = d.getData("select status,nilai1, nilai2 from nilai"+
+            ResultSet rs = d.getData("select status from nilai"+
                     " where username='"+m.username+"' and id_materi='"+idmateri+"' order by id_nilai desc");
             if (rs.isBeforeFirst()){
                 rs.next();
@@ -127,21 +138,28 @@ public class PanelMateri extends javax.swing.JPanel {
                 if (status.equals("adv") && !label.isEnabled()){
                     label.setEnabled(true);
                 }
-                nilai1= rs.getDouble("nilai1");nilai2=rs.getDouble("nilai2");
-
-                        
+  
             }
-            updateColor(label, nilai1, nilai2);
         } catch (SQLException ex) {
             Logger.getLogger(PanelMateri.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void updateColor(JLabel label,double nilai1,double nilai2){
-        Color color;
-        if((nilai1+nilai2)/2 >=0.7) color=Color.green;
-        else if (nilai1>0 && label.isEnabled()) color = Color.blue;
-        else color = Color.red;
-        label.setForeground(color);
+    private void updateColor(String idm,JLabel label){
+        try {
+            Color color;
+            ResultSet rs = d.getData("select status,nilai1, nilai2 from nilai"+
+                    " where username='"+m.username+"' and id_materi='"+idm+"' order by id_nilai desc");
+            double nilai1=0,nilai2=0;
+            if(rs.isBeforeFirst()){
+                nilai1=rs.getDouble("nilai1");
+                nilai2= rs.getDouble("nilai2");
+            }   if((nilai1+nilai2)/2 >=0.7) color=Color.green;
+            else if (nilai1>0 && label.isEnabled()) color = Color.blue;
+            else color = Color.red;
+            label.setForeground(color);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelMateri.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     String getUsername(){
         return m.username;
