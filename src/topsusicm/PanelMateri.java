@@ -106,7 +106,7 @@ public class PanelMateri extends javax.swing.JPanel {
             updateStatusLabel("04alt", labelMoreComplexQueries);
             updateStatusLabel("06inj", labelFullOuter);
             updateStatusLabel("11mcq", labelInnerJoin);
-            updateColor(labelCreateInsert, labelUpdate.isEnabled() ? 1:0, 0);
+            updateColor(labelCreateInsert, labelUpdate.isEnabled() ? 2:0, 0);
             
         } catch (SQLException ex) {
             Logger.getLogger(PanelMateri.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,8 +139,8 @@ public class PanelMateri extends javax.swing.JPanel {
     private void updateColor(JLabel label,double nilai1,double nilai2){
         Color color;
         if((nilai1+nilai2)/2 >=0.7) color=Color.green;
+        else if (nilai1>0 && label.isEnabled()) color = Color.blue;
         else color = Color.red;
-        if (nilai1>0 && label.isEnabled()) color = Color.blue;
         label.setForeground(color);
     }
     String getUsername(){
